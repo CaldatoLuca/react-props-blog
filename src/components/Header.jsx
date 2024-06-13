@@ -3,7 +3,7 @@ const Header = () => {
     <header className="sticky top-0 z-40 backdrop-blur border-b border-slate-50/[0.1]">
       <div className="flex justify-between items-center h-full py-4">
         <div className="flex items-center cursor-pointer">
-          <img src="/logo.png" alt="logo" className="w-12 mr-3" />
+          <img src="/logo-trasparence.png" alt="logo" className="w-12 mr-3" />
           <h1 className=" text-slate-300 text-3xl font-medium">
             Reactive<span className="text-emerald-500">X</span>
           </h1>
