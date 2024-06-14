@@ -1,6 +1,13 @@
-import tagColor from "../../utils/tagColor";
+import { useState } from "react";
 
 const PostCard = ({ title, content, image, tags, published }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const maxLength = 200;
+
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
     <div
       className={`w-3/5 rounded-lg shadow-2xl bg-slate-700 grid grid-cols-6 ${
@@ -11,18 +18,32 @@ const PostCard = ({ title, content, image, tags, published }) => {
       <div className="col-span-5 p-4">
         {/* Titolo e contenuto */}
         <h3 className="text-lg font-semibold text-emerald-500 mb-2">{title}</h3>
-        <p className="mb-4">{content}</p>
+        <p className="mb-4">
+          {isExpanded ? content : `${content.substring(0, maxLength)}...`}
+          {content.length > maxLength && (
+            <span
+              className="text-emerald-500 cursor-pointer"
+              onClick={handleToggle}
+            >
+              {isExpanded ? " View less" : " View more"}
+            </span>
+          )}
+        </p>
 
         {/* Immagine */}
-        <div className="mb-2">
-          <img src={image} alt="" className="w-full rounded-md" />
-        </div>
+        {image || image === "" ? (
+          <figure className="mb-2">
+            <img src={image} alt="" className="w-full rounded-md" />
+          </figure>
+        ) : (
+          ""
+        )}
 
         {/* User */}
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 rounded-full overflow-hidden">
+          <figure className="w-8 h-8 rounded-full overflow-hidden">
             <img src={image} alt="" className="w-full h-full object-cover" />
-          </div>
+          </figure>
           <span className="text-slate-200">Username</span>
         </div>
       </div>
@@ -32,9 +53,7 @@ const PostCard = ({ title, content, image, tags, published }) => {
         {/* Tags */}
         <ul>
           {tags.map((t, i) => (
-            <li key={`tag${i}`} className={tagColor(t)}>
-              #{t}
-            </li>
+            <li key={`tag${i}`}>#{t}</li>
           ))}
         </ul>
       </div>

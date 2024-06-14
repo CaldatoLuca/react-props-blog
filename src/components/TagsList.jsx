@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { posts } from "../../posts";
-import tagColor from "../../utils/tagColor";
 
-const TagsList = () => {
+const TagsList = ({ onTagClick }) => {
   const tags = posts.reduce((acc, curr) => {
     curr.tags.forEach((t) => {
       if (!acc.includes(t)) {
@@ -11,6 +11,11 @@ const TagsList = () => {
 
     return acc;
   }, []);
+
+  const [inputTag, setInputTag] = useState("");
+  const handleInputChange = (event) => {
+    setInputTag(event.target.value);
+  };
 
   return (
     <div className="col-span-1 ">
@@ -23,20 +28,21 @@ const TagsList = () => {
           type="text"
           placeholder="Search tag"
           className="mb-2 rounded-md bg-slate-500 bg-opacity-50 p-1 cursor-pointer focus:outline-none focus:border-transparent "
+          onChange={handleInputChange}
         />
 
         <ul>
-          <li className="text-ellipsis"></li>
-          {tags.map((t, i) => (
-            <li
-              key={`tagItem${i}`}
-              className={`hover:bg-slate-500 hover:bg-opacity-50 hover:font-semibold transition px-1 rounded-md  ${tagColor(
-                t
-              )} cursor-pointer`}
-            >
-              #{t.length > 25 ? `${t.substring(0, 20)}...` : t}
-            </li>
-          ))}
+          {tags
+            .filter((tag) => tag.includes(inputTag))
+            .map((t, i) => (
+              <li
+                key={`tagItem${i}`}
+                onClick={() => onTagClick(t)}
+                className={`hover:bg-slate-500 hover:bg-opacity-50 hover:font-semibold transition px-1 rounded-md cursor-pointer`}
+              >
+                #{t.length > 25 ? `${t.substring(0, 20)}...` : t}
+              </li>
+            ))}
         </ul>
       </div>
     </div>
